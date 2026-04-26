@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For You 🌹</title>
+    <style>
+        /* RESET */
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            font-family: 'Georgia', serif;
+            overflow: hidden;
+            background-color: #000;
+        }
+
+        /* PANTALLA DE INICIO (NEGRA) */
+        #pantalla-inicio {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+            transition: opacity 1s;
+        }
+
+        #btnOpen {
+            background: none;
+            border: 2px solid white;
+            color: white;
+            padding: 15px 40px;
+            font-size: 1.5rem;
+            letter-spacing: 5px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        #btnOpen:hover {
+            background: white;
+            color: black;
+        }
+
+        /* PANTALLA DE ROSAS (OCULTA AL INICIO) */
+        #pantalla-rosas {
+            display: none;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, #2b0000 0%, #000000 100%);
+            position: relative;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 1;
+        }
+
+        h1 {
+            color: #ff4d4d;
+            font-size: 2.5rem;
+            text-align: center;
+            z-index: 10;
+            text-shadow: 0 0 20px rgba(255, 0, 0, 0.5);
+            padding: 20px;
+        }
+
+        /* LLUVIA DE ROSAS */
+        .rosa {
+            position: absolute;
+            top: -50px;
+            font-size: 2rem;
+            user-select: none;
+            pointer-events: none;
+            animation: fall linear infinite;
+        }
+
+        @keyframes fall {
+            to {
+                transform: translateY(110vh) rotate(360deg);
+            }
+        }
+
+        .oculto {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="pantalla-inicio">
+        <button id="btnOpen">open</button>
+    </div>
+
+    <div id="pantalla-rosas">
+        <h1>this is for you my cutie</h1>
+    </div>
+
+    <script>
+        const btnOpen = document.getElementById('btnOpen');
+        const inicio = document.getElementById('pantalla-inicio');
+        const rosasScreen = document.getElementById('pantalla-rosas');
+
+        btnOpen.addEventListener('click', () => {
+            // Desvanecer pantalla negra
+            inicio.classList.add('oculto');
+            
+            // Mostrar pantalla de rosas
+            rosasScreen.style.display = 'flex';
+
+            // Crear lluvia de rosas
+            iniciarLluvia();
+        });
+
+        function iniciarLluvia() {
+            const container = document.getElementById('pantalla-rosas');
+            const totalRosas = 50;
+
+            for (let i = 0; i < totalRosas; i++) {
+                crearRosa(container);
+            }
+        }
+
+        function crearRosa(container) {
+            const rosa = document.createElement('div');
+            rosa.classList.add('rosa');
+            rosa.innerText = '🌹';
+            
+            // Posición aleatoria horizontal
+            rosa.style.left = Math.random() * 100 + 'vw';
+            
+            // Retraso y duración aleatoria para que se vea natural
+            const duration = Math.random() * 3 + 2;
+            const delay = Math.random() * 5;
+            
+            rosa.style.animationDuration = duration + 's';
+            rosa.style.animationDelay = '-' + delay + 's';
+            rosa.style.opacity = Math.random();
+            rosa.style.fontSize = (Math.random() * 20 + 20) + 'px';
+
+            container.appendChild(rosa);
+
+            // Reiniciar rosa cuando termine la animación
+            rosa.addEventListener('animationiteration', () => {
+                rosa.style.left = Math.random() * 100 + 'vw';
+            });
+        }
+    </script>
+</body>
+</html>
