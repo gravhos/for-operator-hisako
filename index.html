@@ -15,7 +15,7 @@
             font-family: 'Georgia', serif;
         }
 
-        /* FASE 1: BOTÓN OPEN /
+        /* PANTALLA INICIAL NEGRA */
         #pantalla-inicio {
             position: fixed;
             width: 100%;
@@ -25,7 +25,7 @@
             justify-content: center;
             align-items: center;
             z-index: 100;
-            transition: opacity 1s ease;
+            transition: opacity 1s;
         }
 
         #btnOpen {
@@ -36,26 +36,109 @@
             font-size: 1.2rem;
             letter-spacing: 5px;
             cursor: pointer;
-            transition: 0.3s;
         }
 
-        #btnOpen:hover { background: white; color: black; }
-
-        / FASE 2: SORPRESA */
+        /* ESCENA FINAL */
         #escena {
             display: none;
             width: 100%;
             height: 100%;
-            background: radial-gradient(circle, #4a0000 0%, #000000 100%);
+            background: radial-gradient(circle, #3d0000 0%, #000000 100%);
             position: relative;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
         }
 
         h1 {
+            position: absolute;
+            top: 30%;
+            width: 100%;
             color: white;
-            font-size: 2.5rem;
+            font-size: 2.2rem;
             text-align: center;
             z-index: 10;
-            text-shadow: 0
+            text-shadow: 0 0 20px rgba(255,0,0,0.6);
+            margin: 0;
+        }
+
+        /* LOS CHOCOLATES ABAJO - PEGADOS */
+        .chocolates-img {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 40vh; /* Ocupa el 40% de la pantalla abajo */
+            background-image: url('https://images.unsplash.com/photo-1549007994-cb92caebd54b?q=80&w=2000&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center top;
+            z-index: 20; /* Por encima de los pétalos */
+        }
+
+        /* EFECTO DE SOMBRA PARA LOS CHOCOLATES */
+        .chocolates-img::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.5) 0%, transparent 20%);
+        }
+
+        /* PÉTALOS */
+        .petalo {
+            position: absolute;
+            top: -50px;
+            z-index: 5;
+            animation: caer linear infinite;
+        }
+
+        @keyframes caer {
+            0% { transform: translateY(0) rotate(0deg); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
+        }
+
+        .oculto { display: none !important; }
+    </style>
+</head>
+<body>
+
+    <div id="pantalla-inicio">
+        <button id="btnOpen">OPEN</button>
+    </div>
+
+    <div id="escena">
+        <h1>this is for you my cutie</h1>
+        <div class="chocolates-img"></div>
+    </div>
+
+    <script>
+        const btnOpen = document.getElementById('btnOpen');
+        const inicio = document.getElementById('pantalla-inicio');
+        const escena = document.getElementById('escena');
+
+        btnOpen.addEventListener('click', () => {
+            inicio.style.opacity = '0';
+            setTimeout(() => {
+                inicio.classList.add('oculto');
+                escena.style.display = 'block';
+                iniciarLluvia();
+            }, 1000);
+        });
+
+        function iniciarLluvia() {
+            for (let i = 0; i < 30; i++) {
+                crearRosa();
+            }
+        }
+
+        function crearRosa() {
+            const rosa = document.createElement('div');
+            rosa.className = 'petalo';
+            rosa.innerHTML = '🌹';
+            rosa.style.left = Math.random() * 100 + 'vw';
+            rosa.style.fontSize = (Math.random() * 20 + 20) + 'px';
+            rosa.style.animationDuration = (Math.random() * 3 + 4) + 's';
+            rosa.style.animationDelay = Math.random() * 5 + 's';
+            escena.appendChild(rosa);
+        }
+    </script>
+</body>
+</html>
